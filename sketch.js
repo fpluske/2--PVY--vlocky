@@ -1,4 +1,7 @@
 let snowflakes = [];
+let width = screen.width;
+let height = screen.height;
+
 
 class Snowflake {
   constructor() {
@@ -20,11 +23,13 @@ class Snowflake {
 }
 
 function setup() {
-  createCanvas(850, 700);
+  createCanvas(width, height);
+  console.log(width);
+  console.log(height);
 }
 
 function draw() {
-  background(220);
+  background(20);
   if (random(1) < 0.2) snowflakes.push(new Snowflake());
   for (let i = 0; i < snowflakes.length; i++) {
     if (snowflakes[i].y > height + 20) {
