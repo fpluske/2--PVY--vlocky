@@ -1,7 +1,32 @@
 let snowflakes = [];
 let width = screen.width;
 let height = screen.height;
+let snowflakeImage;
+let backgroundImage;
+let dingSound;
+let pokusny;
 
+class Rectangle {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.width = 50;
+    this.height = 30;
+    this.color = color(random(255), random(255), random(255));
+  }
+
+  draw() {
+    fill(this.color);
+    stroke(0);
+    strokeWeight(5);
+    rect(this.x, this.y, this.width, this.height);
+  }
+
+  move(dx, dy) {
+    this.x += dx;
+    this.y += dy;
+  }
+}
 
 class Snowflake {
   constructor() {
@@ -13,8 +38,13 @@ class Snowflake {
   }
 
   draw() {
-    fill(this.color);
-    circle(this.x, this.y, this.size);
+    if (snowflakeImage) {
+      imageMode(CENTER);
+      image(snowflakeImage, this.x, this.y, this.size / 2, this.size / 2);
+    } else {
+      fill(this.color);
+      circle(this.x, this.y, this.size);
+    }
   }
 
   update() {
@@ -22,14 +52,24 @@ class Snowflake {
   }
 }
 
+function preload() {
+  snowflakeImage = loadImage('vlocka.png');
+  dingSound = loadSound('ding.wav');
+  backgroundImage = loadImage('les.jpg');
+}
+
 function setup() {
   createCanvas(width, height);
-  console.log(width);
-  console.log(height);
+  pokusny = new Rectangle(500, 300);
 }
 
 function draw() {
-  background(20);
+  if (backgroundImage) {
+    imageMode(CORNER);
+    image(backgroundImage, 0, 0, width, height);
+  } else {
+    background(20);
+  }
   if (random(1) < 0.2) snowflakes.push(new Snowflake());
   for (let i = 0; i < snowflakes.length; i++) {
     if (snowflakes[i].y > height + 20) {
@@ -38,4 +78,6 @@ function draw() {
     snowflakes[i].update();
     snowflakes[i].draw();
   }
+  pokusny.move(-1, -1);
+  pokusny.draw();
 }
